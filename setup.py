@@ -26,12 +26,17 @@ setup(
 	# The first three parameters are not required, if at least a
 	# 'version' is given, then a versioninfo resource is built from
 	# them and added to the executables.
-	version = "0.2.0",
+	version = "0.3.0",
 	description = "Dabo Runtime Engine",
 	name = "daborun",
-	data_files=[ ("", glob.glob("\\projects\\dabo\\icons\\*.png")) ],
+#- 	data_files=[ ("", glob.glob("\\projects\\dabo\\icons\\*.png")) ],
 	# targets to build
-	console = ["daborun.py"],
+#	console = ["daborun.py"],
+	windows = ["daborun.py"],
 	#exclude the actual framework
-	options = { "py2exe": {"excludes" : ["dabo"]} },
+	options = { "py2exe": 
+			{"includes" : ["MySQLdb", "ConfigParser", "threading"],
+			"excludes" : ["dabo", "dabo.db", "dabo.biz", "dabo.ui", 
+				"dabo.common", "dabo.icons", "dabo.ui.uiwx"]} },
 	)
+

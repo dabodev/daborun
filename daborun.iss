@@ -16,13 +16,14 @@ SolidCompression=yes
 OutputBaseFilename=DaboRuntimeSetup
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "C:\projects\daborun\dist\daborun.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\projects\daborun\dist\*"; Excludes: "Output\*, *.iss"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\dabo\*"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
+Source: "C:\cleanprojects\dabo\icons\*.png"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\dabodemo\*"; DestDir: "{app}\demo"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\daboide\*"; DestDir: "{app}\ide"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files

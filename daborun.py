@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, time
 import wx
 import wx.lib.mixins.listctrl
 import wx.lib.gridmovers
@@ -12,18 +12,22 @@ import xml.dom.minidom
 pth = sys.path
 # For py2exe installations: sys.path will be the path to 'library.zip',
 # which contains all the compiled modules. We need to strip that off
-# to get the base path, which includes the images, etc.
+# to get the base path, from which we can assume that the Dabo files
+# are in a subdirectory named 'dabo'.
 for pthItem in pth:
 	if "library.zip" in pthItem:
-		sys.path.insert(0, os.path.dirname(pthItem))
+		basepth = os.path.dirname(pthItem)
+		dabopth = os.path.join(basepth, "dabo")
+#		sys.path.insert(0, dabopth)
+		sys.path.insert(0, basepth)
 		break
 
 currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
 	sys.path.append(currdir)
-if not libdir in pth:
-	sys.path.append(libdir)
+#- if not libdir in pth:
+#- 	sys.path.append(libdir)
 	
 def dummyImport():
 	# This proc does nothing except force the inclusion of all the modules
@@ -72,43 +76,26 @@ class DaboRuntimeEngine(object):
 		except:
 			self.module = None
 		
+		if self.prg:
+			# If this program contains a path, add that path to 
+			# the sys.path
+			pth = os.path.split(self.prg)[0]
+			if pth:
+				if pth not in sys.path:
+					sys.path.append(pth)
+		
+#- 		# Debugging!
+#- 		print "-"*88
+#- 		print "RUN"
+#- 		print "ARGS", sys.argv
+#- 		print "PATH", sys.path
+#- 		print "CURDIR", os.getcwd()
+#- 		
+#- 		time.sleep(5)
+		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
 
-
-
-####################################################
-#			NOTE: the following is my attempt to exclude Dabo from the 
-#			frozen app. IOW, create a static set of libs, but without Dabo, 
-#			so that they can simply add the current version of Dabo without
-#			having to download a huge chunk of code that doesn't
-#			change. It's still very shaky, but I'm leaving it in here in
-#			case I get around to implementing this in the future.
-####################################################
-#		try:
-#			import pathToDabo
-#			self.daboPath = pathToDabo.getDaboPath()
-#		except:
-#			self. daboPath = "."
-#			
-#		# Add Dabo to the path
-#		self.setupDabo()
-		# Add the current dir to the path
-#		sys.path.append(os.getcwd())
-#		# Add the library path, too.
-#		sys.path.append(os.path.join(os.getcwd(), "lib"))
-
-#	def setupDabo(self):
-#		try:
-#			sys.path.append(self.daboPath)
-#			import dabo as dabo
-# 
-#		except:
-#			print "The Dabo module was not found in any of these directories:"
-#			for p in sys.path:
-#				print "\t", p
-#			print "Current directory is:", os.getcwd()
-####################################################
 
 
 	def run(self):
