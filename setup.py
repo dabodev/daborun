@@ -29,9 +29,9 @@ setup(
 	version = "0.2.0",
 	description = "Dabo Runtime Engine",
 	name = "daborun",
-	data_files=[ ("", glob.glob("\\projects\\dabo\\icons\\*.png")),
-		("", ["\\projects\\demo\\appWizard.py", 
-			"\\projects\\demo\\FieldSpecEditor.py"]) ],
+	data_files=[ ("", glob.glob("\\projects\\dabo\\icons\\*.png")) ],
 	# targets to build
 	console = ["daborun.py"],
+	#exclude the actual framework
+	options = { "py2exe": {"excludes" : ["dabo"]} },
 	)

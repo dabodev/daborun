@@ -1,10 +1,23 @@
 import sys, os
-
+import wx
 import wx.lib.mixins.listctrl
 import wx.lib.gridmovers
 
+import xml
+import xml.dom
+import xml.sax
+import xml.dom.minidom
+
 # Add the current dir and library path
 pth = sys.path
+# For py2exe installations: sys.path will be the path to 'library.zip',
+# which contains all the compiled modules. We need to strip that off
+# to get the base path, which includes the images, etc.
+for pthItem in pth:
+	if "library.zip" in pthItem:
+		sys.path.insert(0, os.path.dirname(pthItem))
+		break
+
 currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
@@ -43,6 +56,9 @@ def dummyImport():
 	import wx.xrc
 	
 	import mx.DateTime
+	import xml
+	import xml.dom
+	import xml.dom.minidom
 
 
 class DaboRuntimeEngine(object):
@@ -58,10 +74,7 @@ class DaboRuntimeEngine(object):
 		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
-		
-		# Add the current path
-	#	print "__FILE__", self.__file__
-		print "SYSPATH", sys.path
+
 
 
 ####################################################
@@ -99,14 +112,14 @@ class DaboRuntimeEngine(object):
 
 
 	def run(self):
-		impt = self.prg
-		isFile = (impt[-3:] == ".py")
-		if isFile:
-			impt = self.prg[:-3]
-		print "self.prg:", self.prg, impt
-		print "self.module:", self.module
+		if self.prg:
+			impt = self.prg
+			isFile = (impt[-3:] == ".py")
+			if isFile:
+				impt = self.prg[:-3]
+#- 		print "self.prg:", self.prg, impt
+#- 		print "self.module:", self.module
 
-		if impt:
 			if not self.module:
 				if isFile:
 					execfile(self.prg, {"__name__": "__main__"} )
@@ -116,7 +129,22 @@ class DaboRuntimeEngine(object):
 			else:
 				#print "EXEC:", impt + "." + self.module + "()"
 				exec(impt + "." + self.module + "()")
-		
+		else:
+			app = wx.PySimpleApp()
+			prmpt = "Please select the Python file to run..."
+			wildcard = "Python Files (*.py)|*.py|" \
+				"Compiled Python (*.pyc)|*.pyc|" \
+				"All files (*.*)|*.*"
+			openDlg = wx.FileDialog(None, prmpt, wildcard=wildcard, 
+					defaultDir=os.getcwd(), style=wx.OPEN ) #| wx.HIDE_READONLY)
+			res = openDlg.ShowModal()
+			
+			app.Destroy()
+			pth = openDlg.GetPath()
+			openDlg.Destroy()
+			if res == wx.ID_OK:
+				execfile(pth, {"__name__": "__main__"} )
+			
 
 if __name__ == "__main__":
 	dEngine = DaboRuntimeEngine()
