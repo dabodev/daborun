@@ -1,4 +1,8 @@
 import sys, os
+
+import wx.lib.mixins.listctrl
+import wx.lib.gridmovers
+
 # Add the current dir and library path
 pth = sys.path
 currdir = os.getcwd()
@@ -23,6 +27,7 @@ def dummyImport():
 	import wx
 	import wx.build
 	import wx.lib
+	import wx.lib.mixins
 	import wx.py
 	import wx.tools
 	import wx.calendar
@@ -36,6 +41,8 @@ def dummyImport():
 	# import wx.ogl
 	import wx.stc
 	import wx.xrc
+	
+	import mx.DateTime
 
 
 class DaboRuntimeEngine(object):
@@ -44,7 +51,6 @@ class DaboRuntimeEngine(object):
 			self.prg = sys.argv[1]
 		except:
 			self.prg = None
-		
 		try:
 			self.module = sys.argv[2]
 		except:
@@ -52,6 +58,10 @@ class DaboRuntimeEngine(object):
 		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
+		
+		# Add the current path
+	#	print "__FILE__", self.__file__
+		print "SYSPATH", sys.path
 
 
 ####################################################
@@ -87,19 +97,25 @@ class DaboRuntimeEngine(object):
 #			print "Current directory is:", os.getcwd()
 ####################################################
 
-	
+
 	def run(self):
 		impt = self.prg
-		if impt[-3:] == ".py":
+		isFile = (impt[-3:] == ".py")
+		if isFile:
 			impt = self.prg[:-3]
 		print "self.prg:", self.prg, impt
 		print "self.module:", self.module
 
 		if impt:
-			exec("import " + impt)
-			if self.module:
-#				print "EXEC:", impt + "." + self.module + "()"
-				exec(impt + "." + self.module + "()")		
+			if not self.module:
+				if isFile:
+					execfile(self.prg, {"__name__": "__main__"} )
+				else:
+					# File should run directly when imported
+					exec("import " + impt)
+			else:
+				#print "EXEC:", impt + "." + self.module + "()"
+				exec(impt + "." + self.module + "()")
 		
 
 if __name__ == "__main__":
