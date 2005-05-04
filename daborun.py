@@ -1,4 +1,8 @@
-import sys, os, time
+import sys
+import os
+import time
+import gettext
+import glob
 import wx
 import wx.lib.mixins.listctrl
 import wx.lib.gridmovers
@@ -63,6 +67,8 @@ def dummyImport():
 	import xml
 	import xml.dom
 	import xml.dom.minidom
+	
+	import reportlab
 
 
 class DaboRuntimeEngine(object):
@@ -84,14 +90,14 @@ class DaboRuntimeEngine(object):
 				if pth not in sys.path:
 					sys.path.append(pth)
 		
-#- 		# Debugging!
-#- 		print "-"*88
-#- 		print "RUN"
-#- 		print "ARGS", sys.argv
-#- 		print "PATH", sys.path
-#- 		print "CURDIR", os.getcwd()
-#- 		
-#- 		time.sleep(5)
+		# Debugging!
+		print "-"*88
+		print "RUN"
+		print "ARGS", sys.argv
+		print "PATH", sys.path
+		print "CURDIR", os.getcwd()
+		
+		time.sleep(5)
 		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
@@ -104,9 +110,10 @@ class DaboRuntimeEngine(object):
 			isFile = (impt[-3:] == ".py")
 			if isFile:
 				impt = self.prg[:-3]
-#- 		print "self.prg:", self.prg, impt
-#- 		print "self.module:", self.module
-
+				
+			print "self.prg:", self.prg, impt
+			print "self.module:", self.module
+	
 			if not self.module:
 				if isFile:
 					execfile(self.prg, {"__name__": "__main__"} )
@@ -114,7 +121,7 @@ class DaboRuntimeEngine(object):
 					# File should run directly when imported
 					exec("import " + impt)
 			else:
-				#print "EXEC:", impt + "." + self.module + "()"
+				print "EXEC:", impt + "." + self.module + "()"
 				exec(impt + "." + self.module + "()")
 		else:
 			app = wx.PySimpleApp()

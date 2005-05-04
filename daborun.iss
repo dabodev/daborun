@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Dabo Runtime Engine
-AppVerName=DaboRun 0.3
+AppVerName=DaboRun 0.3.3
 AppPublisher=Ed Leafe
 AppPublisherURL=http://dabodev.com
 AppSupportURL=http://dabodev.com
@@ -23,7 +23,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "C:\projects\daborun\dist\daborun.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\projects\daborun\dist\*"; Excludes: "Output\*, *.iss"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\dabo\*"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
-Source: "C:\cleanprojects\dabo\icons\*.png"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
+;Source: "C:\cleanprojects\dabo\icons\*.png"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\dabodemo\*"; DestDir: "{app}\demo"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\daboide\*"; DestDir: "{app}\ide"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
