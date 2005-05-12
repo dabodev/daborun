@@ -26,6 +26,7 @@ Source: "C:\cleanprojects\dabo\*"; DestDir: "{app}\dabo"; Flags: ignoreversion r
 ;Source: "C:\cleanprojects\dabo\icons\*.png"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\dabodemo\*"; DestDir: "{app}\demo"; Flags: ignoreversion recursesubdirs
 Source: "C:\cleanprojects\daboide\*"; DestDir: "{app}\ide"; Flags: ignoreversion recursesubdirs
+Source: "C:\Python24\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
