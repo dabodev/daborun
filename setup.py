@@ -26,7 +26,7 @@ setup(
 	# The first three parameters are not required, if at least a
 	# 'version' is given, then a versioninfo resource is built from
 	# them and added to the executables.
-	version = "0.3.3",
+	version = "0.4",
 	description = "Dabo Runtime Engine",
 	name = "daborun",
 #- 	data_files=[ ("", glob.glob("\\projects\\dabo\\icons\\*.png")) ],
