@@ -69,10 +69,18 @@ def dummyImport():
 	import xml.dom.minidom
 	
 	import reportlab
+	import winpdb
+	import MySQLdb
+	import pysqlite2
+	import kinterbasdb
+	
 
 
 class DaboRuntimeEngine(object):
 	def __init__(self):
+		
+		print "ENGINE INIT"
+		
 		try:
 			self.prg = sys.argv[1]
 		except:
@@ -96,8 +104,6 @@ class DaboRuntimeEngine(object):
 		print "ARGS", sys.argv
 		print "PATH", sys.path
 		print "CURDIR", os.getcwd()
-		
-		time.sleep(5)
 		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
@@ -132,9 +138,11 @@ class DaboRuntimeEngine(object):
 			openDlg = wx.FileDialog(None, prmpt, wildcard=wildcard, 
 					defaultDir=os.getcwd(), style=wx.OPEN ) #| wx.HIDE_READONLY)
 			res = openDlg.ShowModal()
-			
 			app.Destroy()
 			pth = openDlg.GetPath()
+			
+			print "SELECTION", pth
+			
 			openDlg.Destroy()
 			if res == wx.ID_OK:
 				execfile(pth, {"__name__": "__main__"} )
