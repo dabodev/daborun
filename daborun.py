@@ -78,9 +78,6 @@ def dummyImport():
 
 class DaboRuntimeEngine(object):
 	def __init__(self):
-		
-		print "ENGINE INIT"
-		
 		try:
 			self.prg = sys.argv[1]
 		except:
@@ -99,7 +96,7 @@ class DaboRuntimeEngine(object):
 					sys.path.append(pth)
 		
 		# Debugging!
-		print "-"*88
+		print "-"*44
 		print "RUN"
 		print "ARGS", sys.argv
 		print "PATH", sys.path
@@ -145,6 +142,13 @@ class DaboRuntimeEngine(object):
 			
 			openDlg.Destroy()
 			if res == wx.ID_OK:
+				if pth:
+					pthDir = os.path.split(pth)[0]
+					if pthDir not in sys.path:
+						sys.path.append(pthDir)
+						
+				print "PATH BEFORE EXECUTION", sys.path
+
 				execfile(pth, {"__name__": "__main__"} )
 			
 

@@ -3,36 +3,150 @@
 
 [Setup]
 AppName=Dabo Runtime Engine
-AppVerName=DaboRun 0.6
+AppVerName=DaboRun 0.6.2
 AppPublisher=Ed Leafe
 AppPublisherURL=http://dabodev.com
 AppSupportURL=http://dabodev.com
-AppUpdatesURL=http://dabodev.com
+AppUpdatesURL=http://dabodev.com/download
 DefaultDirName={pf}\Dabo Runtime
 DefaultGroupName=Dabo Runtime Engine
 AllowNoIcons=yes
 Compression=lzma
 SolidCompression=yes
-;OutputBaseFilename=DaboRuntimeSetup
-OutputBaseFilename=DaboRuntimeSetupConsole
+OutputBaseFilename=DaboRuntimeSetup
+;OutputBaseFilename=DaboRuntimeSetupConsole
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
+Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+
+[Dirs]
+Name: {app}\Common
 
 [Files]
-Source: "C:\projects\daborun\dist\daborun.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\projects\daborun\dist\*"; Excludes: "Output\*, *.iss"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "C:\cleanprojects\dabo\*"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
+Source: C:\projects\daborun\dist\daborun.exe; DestDir: {app}; Flags: ignoreversion
+Source: C:\projects\daborun\dist\*; Excludes: Output\*, *.iss; DestDir: {app}; Flags: ignoreversion recursesubdirs
+Source: C:\cleanprojects\dabo\*; DestDir: {app}\dabo; Flags: ignoreversion recursesubdirs
 ;Source: "C:\cleanprojects\dabo\icons\*.png"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
-Source: "C:\cleanprojects\dabodemo\*"; DestDir: "{app}\demo"; Flags: ignoreversion recursesubdirs
-Source: "C:\cleanprojects\daboide\*"; DestDir: "{app}\ide"; Flags: ignoreversion recursesubdirs
-Source: "C:\Python24\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ..\..\cleanprojects\dabodemo\*; DestDir: {app}\demo; Flags: ignoreversion recursesubdirs; AfterInstall: LinkDemo
+Source: C:\cleanprojects\daboide\*; DestDir: {app}\ide; Flags: ignoreversion recursesubdirs; AfterInstall: LinkIDE
+Source: C:\Python24\msvcr71.dll; DestDir: {app}; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: README.txt; DestDir: {app}; Flags: isreadme
 
 [Icons]
-Name: "{group}\Dabo Runtime Engine"; Filename: "{app}\daborun.exe"
-Name: "{group}\{cm:UninstallProgram,Dabo Runtime Engine}"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\Dabo Runtime Engine"; Filename: "{app}\daborun.exe"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Dabo Runtime Engine"; Filename: "{app}\daborun.exe"; Tasks: quicklaunchicon
+Name: {group}\Dabo Runtime Engine; Filename: {app}\daborun.exe; IconFilename: {app}\dabo\icons\daboIcon.ico; Tasks: 
+Name: {group}\{cm:UninstallProgram,Dabo Runtime Engine}; Filename: {uninstallexe}
+Name: {userdesktop}\Dabo Runtime Engine; Filename: {app}\daborun.exe; Tasks: desktopicon
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\Dabo Runtime Engine; Filename: {app}\daborun.exe; Tasks: quicklaunchicon
+
+[Code]
+procedure LinkDemo();
+begin
+  CreateShellLink(
+    ExpandConstant('{app}\Common\SimpleFormWithBizobj.lnk'),
+	'Shortcut to the SimpleFormWithBizobj demo',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\demo\SimpleFormWithBizobj.py'),
+    ExpandConstant('{app}\demo'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\Bubblet.lnk'),
+	'Shortcut to the Bubblet game',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\demo\games\bubblet\main.py'),
+    ExpandConstant('{app}\demo\games\bubblet'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\Montana.lnk'),
+	'Shortcut to the Montana solitaire game',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\demo\games\montana.py'),
+    ExpandConstant('{app}\demo\games'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\SizerTutorial.lnk'),
+	'Shortcut to the sizer tutorial',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\demo\tutorial\sizerExample.py'),
+    ExpandConstant('{app}\demo\tutorial'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+end ;
+
+procedure LinkIDE();
+begin
+  CreateShellLink(
+    ExpandConstant('{app}\Common\AppWizard.lnk'),
+	'Shortcut to the Dabo Application Wizard',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\ide\wizards\AppWizard\AppWizard.py'),
+    ExpandConstant('{app}\ide'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\ClassDesigner.lnk'),
+	'Shortcut to the Dabo Class Designer',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\ide\ClassDesigner.py'),
+    ExpandConstant('{app}\ide'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\ReportDesigner.lnk'),
+	'Shortcut to the Dabo Report Designer',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\ide\ReportDesigner.py'),
+    ExpandConstant('{app}\ide'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\Editor.lnk'),
+	'Shortcut to the Dabo Editor',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\ide\Editor.py'),
+    ExpandConstant('{app}\ide'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\ConnectionEditor.lnk'),
+	'Shortcut to the Dabo Connection Editor',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\ide\CxnEditor.py'),
+    ExpandConstant('{app}\ide'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+  CreateShellLink(
+    ExpandConstant('{app}\Common\FieldSpecEditor.lnk'),
+	'Shortcut to the Dabo FieldSpec Editor',
+  	ExpandConstant('{app}\daborun.exe'),
+  	ExpandConstant('{app}\ide\FieldSpecEditor.py'),
+    ExpandConstant('{app}\ide'),
+    '',
+    0,
+    SW_SHOWNORMAL) ;
+
+ end ;
+
 
