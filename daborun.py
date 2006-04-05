@@ -12,6 +12,9 @@ import xml.dom
 import xml.sax
 import xml.dom.minidom
 
+# Inform the framework that we are using the dabo runtime:
+sys._daboRun = True
+
 # Add the current dir and library path
 pth = sys.path
 # For py2exe installations: sys.path will be the path to 'library.zip',
@@ -88,12 +91,13 @@ class DaboRuntimeEngine(object):
 			self.module = None
 		
 		if self.prg:
-			# If this program contains a path, add that path to 
-			# the sys.path
+			# If this program contains a path, insert that path to 
+			# the sys.path. This will be the first place libraries will
+			# be searched for, and it will become Application.HomeDirectory.
 			pth = os.path.split(self.prg)[0]
 			if pth:
 				if pth not in sys.path:
-					sys.path.append(pth)
+					sys.path.insert(0, pth)
 		
 		# Debugging!
 		print "-"*44
