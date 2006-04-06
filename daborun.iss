@@ -13,8 +13,8 @@ DefaultGroupName=Dabo Runtime Engine
 AllowNoIcons=yes
 Compression=lzma
 SolidCompression=yes
-;OutputBaseFilename=DaboRuntimeSetup
-OutputBaseFilename=DaboRuntimeSetupConsole
+OutputBaseFilename=DaboRuntimeSetup
+;OutputBaseFilename=DaboRuntimeSetupConsole
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
@@ -22,6 +22,12 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Dirs]
 Name: {app}\Common
+
+[UninstallDelete]
+Name: {app}\Common; Type: filesandordirs
+Name: {app}\dabo\*; Type: filesandordirs
+Name: {app}\demo\*; Type: filesandordirs
+Name: {app}\ide\*; Type: filesandordirs
 
 [Files]
 Source: C:\projects\daborun\dist\daborun.exe; DestDir: {app}; Flags: ignoreversion
@@ -148,11 +154,3 @@ begin
 		SW_SHOWNORMAL) ;
 
  end ;
-
-procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
-begin
-	DelTree(ExpandConstant('{app}\Common'), True, True, True);
-	DelTree(ExpandConstant('{app}\dabo'), True, True, True);
-	DelTree(ExpandConstant('{app}\ide'), True, True, True);
-	DelTree(ExpandConstant('{app}\demo'), True, True, True);
-end;
