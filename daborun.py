@@ -12,6 +12,7 @@ import xml.dom
 import xml.sax
 import xml.dom.minidom
 
+
 # Inform the framework that we are using the dabo runtime:
 sys._daboRun = True
 
@@ -71,12 +72,10 @@ def dummyImport():
 	import xml.dom
 	import xml.dom.minidom
 	
-	import reportlab
 	import winpdb
 	import MySQLdb
 	import pysqlite2
 	import kinterbasdb
-	
 
 
 class DaboRuntimeEngine(object):
