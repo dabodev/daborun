@@ -18,6 +18,8 @@ sys._daboRun = True
 
 # Add the current dir and library path
 pth = sys.path
+
+print "OPENING: PATH=", pth
 # For py2exe installations: sys.path will be the path to 'library.zip',
 # which contains all the compiled modules. We need to strip that off
 # to get the base path, from which we can assume that the Dabo files
@@ -26,16 +28,16 @@ for pthItem in pth:
 	if "library.zip" in pthItem:
 		basepth = os.path.dirname(pthItem)
 		dabopth = os.path.join(basepth, "dabo")
-#		sys.path.insert(0, dabopth)
-		sys.path.insert(0, basepth)
+		if not basepth in pth:
+			sys.path.insert(0, basepth)
+			print "INSERTED %s INTO PATH" % basepth
 		break
 
 currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
 	sys.path.append(currdir)
-#- if not libdir in pth:
-#- 	sys.path.append(libdir)
+	print "APPENDING %s TO PATH" % currdir
 	
 def dummyImport():
 	# This proc does nothing except force the inclusion of all the modules
@@ -77,6 +79,50 @@ def dummyImport():
 	import pysqlite2
 	import kinterbasdb
 
+	# For PIL compatibility
+	import PIL
+	import Image
+	import ArgImagePlugin
+	import BmpImagePlugin
+	import BufrStubImagePlugin
+	import CurImagePlugin
+	import DcxImagePlugin
+	import EpsImagePlugin
+	import FitsStubImagePlugin
+	import FliImagePlugin
+	import FpxImagePlugin
+	import GbrImagePlugin
+	import GifImagePlugin
+	import GribStubImagePlugin
+	import Hdf5StubImagePlugin
+	import IcnsImagePlugin
+	import IcoImagePlugin
+	import ImImagePlugin
+	import ImtImagePlugin
+	import IptcImagePlugin
+	import JpegImagePlugin
+	import McIdasImagePlugin
+	import MicImagePlugin
+	import MpegImagePlugin
+	import MspImagePlugin
+	import PalmImagePlugin
+	import PcdImagePlugin
+	import PcxImagePlugin
+	import PdfImagePlugin
+	import PixarImagePlugin
+	import PngImagePlugin
+	import PpmImagePlugin
+	import PsdImagePlugin
+	import SgiImagePlugin
+	import SpiderImagePlugin
+	import SunImagePlugin
+	import TgaImagePlugin
+	import TiffImagePlugin
+	import WmfImagePlugin
+	import XVThumbImagePlugin
+	import XbmImagePlugin
+	import XpmImagePlugin
+
 
 class DaboRuntimeEngine(object):
 	def __init__(self):
@@ -97,6 +143,7 @@ class DaboRuntimeEngine(object):
 			if pth:
 				if pth not in sys.path:
 					sys.path.insert(0, pth)
+					print "INIT: APPENDING %s TO PATH" % pth
 		
 		# Debugging!
 		print "-"*44
@@ -141,7 +188,7 @@ class DaboRuntimeEngine(object):
 			app.Destroy()
 			pth = openDlg.GetPath()
 			
-			print "SELECTION", pth
+#- 			print "SELECTION", pth
 			
 			openDlg.Destroy()
 			if res == wx.ID_OK:
@@ -149,7 +196,9 @@ class DaboRuntimeEngine(object):
 					pthDir = os.path.split(pth)[0]
 					if pthDir not in sys.path:
 						sys.path.append(pthDir)
+						print "BEFORE EXEC: APPENDING %s to PATH"% pthDir
 						
+				print
 				print "PATH BEFORE EXECUTION", sys.path
 
 				execfile(pth, {"__name__": "__main__"} )

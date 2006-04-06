@@ -1,4 +1,3 @@
-
 from distutils.core import setup
 import glob
 import py2exe
@@ -7,10 +6,9 @@ setup(
 	# The first three parameters are not required, if at least a
 	# 'version' is given, then a versioninfo resource is built from
 	# them and added to the executables.
-	version = "0.6.2",
+	version = "0.6.4",
 	description = "Dabo Runtime Engine",
 	name = "daborun",
-#- 	data_files=[ ("", glob.glob("\\projects\\dabo\\icons\\*.png")) ],
 	# targets to build
 	console = ["daborun.py"],
 #	windows = ["daborun.py"],
