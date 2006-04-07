@@ -30,6 +30,9 @@ for pthItem in pth:
 			print "INSERTED %s INTO PATH" % basepth
 		break
 
+# Reroute stderr to avoid the popup window:
+sys.stderr = open(os.path.join(basepth, "error.log"), "a")
+
 currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
@@ -134,7 +137,7 @@ class DaboRuntimeEngine(object):
 
 		# Inform the framework that we are using the dabo runtime:
 		sys._daboRunHomeDir = None
-		
+
 		if self.prg:
 			# If this program contains a path, insert that path to 
 			# the sys.path. This will be the first place libraries will
@@ -142,6 +145,7 @@ class DaboRuntimeEngine(object):
 			pth = os.path.split(self.prg)[0]
 			if pth:
 				sys._daboRunHomeDir = pth
+
 				# This prg path may have been appended already, but we need
 				# it to be the first in sys.path. Remove it and insert:
 				try:
