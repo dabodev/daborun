@@ -13,9 +13,6 @@ import xml.sax
 import xml.dom.minidom
 
 
-# Inform the framework that we are using the dabo runtime:
-sys._daboRun = True
-
 # Add the current dir and library path
 pth = sys.path
 
@@ -134,6 +131,9 @@ class DaboRuntimeEngine(object):
 			self.module = sys.argv[2]
 		except:
 			self.module = None
+
+		# Inform the framework that we are using the dabo runtime:
+		sys._daboRunHomeDir = None
 		
 		if self.prg:
 			# If this program contains a path, insert that path to 
@@ -141,9 +141,16 @@ class DaboRuntimeEngine(object):
 			# be searched for, and it will become Application.HomeDirectory.
 			pth = os.path.split(self.prg)[0]
 			if pth:
-				if pth not in sys.path:
-					sys.path.insert(0, pth)
-					print "INIT: APPENDING %s TO PATH" % pth
+				sys._daboRunHomeDir = pth
+				# This prg path may have been appended already, but we need
+				# it to be the first in sys.path. Remove it and insert:
+				try:
+					sys.path.remove(pth)
+					print "INIT: REMOVED %s TO PATH" % pth
+				except ValueError:
+					pass
+				sys.path.insert(0, pth)
+				print "INIT: INSERTED %s TO PATH" % pth
 		
 		# Debugging!
 		print "-"*44
