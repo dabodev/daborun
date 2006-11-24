@@ -6,21 +6,23 @@ setup(
 	# The first three parameters are not required, if at least a
 	# 'version' is given, then a versioninfo resource is built from
 	# them and added to the executables.
-	version = "0.6.4",
+	version = "0.7",
 	description = "Dabo Runtime Engine",
 	name = "daborun",
 	# targets to build
-#	console = ["daborun.py"],
-	windows = ["daborun.py"],
+	console = ["daborun.py"],
+#	windows = ["daborun.py"],
 	#exclude the actual framework
 	options = { "py2exe": 
-			{"includes" : ["ConfigParser", "threading", "mx.DateTime", "winpdb", "pydoc", "PIL"],
+			{"includes" : ["ConfigParser", "threading", "mx.DateTime", "platform", 
+				"winpdb", "pydoc", "PIL"],
 			"excludes" : ["dabo", "dabo.db", "dabo.biz", "dabo.lib", "dabo.ui", 
 				"dabo.common", "dabo.icons", "dabo.ui.uiwx", "Tkconstants", "Tkinter", "tcl",
 				"_imagingtk", "PIL._imagingtk", "ImageTk", "PIL.ImageTk", "FixTk"],
 			"packages" : ["MySQLdb", "encodings", "kinterbasdb", "pysqlite2",
-				"wx.gizmos", "wx.lib.calendar", "wx.lib.foldpanelbar", 
-				"wx.lib.hyperlink", "reportlab"]} },
+				"psycopg2", "wx.gizmos", "wx.lib.calendar", "wx.lib.foldpanelbar", 
+				"wx.lib.hyperlink", "wx.lib.masked", "wx.lib.buttons", 
+				"reportlab"]} },
 	)
 
 # To build, run:

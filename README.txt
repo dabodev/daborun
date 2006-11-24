@@ -4,7 +4,7 @@ The Dabo Runtime Engine for Windows
 
 What is it?
 --------------
-The Dabo Runtime Engine is an EXE that contains all the file needed to run Dabo: the full development environment as well as generated apps. It allows people who are interested in Dabo to try it out without having to install the various prerequisites, and to uninstall it if they decide that it's not for them. The installer does not affect the Windows Registry in any way, and so can be installed without fear of breaking something else.
+The Dabo Runtime Engine is an EXE that contains all the files needed to run Dabo: the full development environment as well as generated apps. It allows people who are interested in Dabo to try it out without having to install the various prerequisites, and to uninstall it if they decide that it's not for them. The installer does not affect the Windows Registry in any way, and so can be installed without fear of breaking something else.
 
 
 How do I run stuff?
@@ -22,6 +22,8 @@ In order to make it easy to try Dabo, there are several shortcuts set up, locate
 
 Demo Programs:
 ----------------
+DaboDemo - An example of some of the UI controls and how to work with them. The code for each demo is visible, and you can modify it and run that modified code without harming the original. This is a great way to learn about programming the Dabo UI.
+
 Bubblet - a fun little game where you get to pop lots of bubbles that demonstrates some of the non-database capabilities of Dabo.
 
 Montana - a simple solitaire game that some have found to be very addictive!
@@ -43,8 +45,7 @@ ConnectionEditor - Dabo can store information for connecting to a database in a 
 
 Editor - A powerful Python text editor written in Dabo. It features code completion, syntax coloring, and lots of other cool stuff.
 
-FieldSpecEditor - The original output of the AppWizard is an XML file containing your applications settings. While you can edit that manually, this tool allows you to more easily control the appearance of your app. You can also preview your changes to make sure that they are what you intended.
-
+PrefEditor - a handy tool for viewing, editing and/or deleting any saved preferences on your system. 
 
 
 

@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Dabo Runtime Engine
-AppVerName=DaboRun 0.6.4
+AppVerName=DaboRun 0.7
 AppPublisher=Ed Leafe
 AppPublisherURL=http://dabodev.com
 AppSupportURL=http://dabodev.com
@@ -13,8 +13,8 @@ DefaultGroupName=Dabo Runtime Engine
 AllowNoIcons=yes
 Compression=lzma
 SolidCompression=yes
-OutputBaseFilename=DaboRuntimeSetup
-;OutputBaseFilename=DaboRuntimeSetupConsole
+;OutputBaseFilename=DaboRuntimeSetup
+OutputBaseFilename=DaboRuntimeSetupConsole
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
@@ -34,8 +34,8 @@ Source: C:\projects\daborun\dist\daborun.exe; DestDir: {app}; Flags: ignoreversi
 Source: C:\projects\daborun\dist\*; Excludes: Output\*, *.iss; DestDir: {app}; Flags: ignoreversion recursesubdirs
 Source: C:\cleanprojects\dabo\*; DestDir: {app}\dabo; Flags: ignoreversion recursesubdirs
 ;Source: "C:\cleanprojects\dabo\icons\*.png"; DestDir: "{app}\dabo"; Flags: ignoreversion recursesubdirs
-Source: ..\..\cleanprojects\dabodemo\*; DestDir: {app}\demo; Flags: ignoreversion recursesubdirs; AfterInstall: LinkDemo
-Source: C:\cleanprojects\daboide\*; DestDir: {app}\ide; Flags: ignoreversion recursesubdirs; AfterInstall: LinkIDE
+Source: C:\cleanprojects\demo\*; DestDir: {app}\demo; Flags: ignoreversion recursesubdirs; AfterInstall: LinkDemo
+Source: C:\cleanprojects\ide\*; DestDir: {app}\ide; Flags: ignoreversion recursesubdirs; AfterInstall: LinkIDE
 Source: C:\Python24\msvcr71.dll; DestDir: {app}; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: README.txt; DestDir: {app}; Flags: isreadme
@@ -46,6 +46,17 @@ Name: {group}\{cm:UninstallProgram,Dabo Runtime Engine}; Filename: {uninstallexe
 Name: {userdesktop}\Dabo Runtime Engine; Filename: {app}\daborun.exe; Tasks: desktopicon
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\Dabo Runtime Engine; Filename: {app}\daborun.exe; Tasks: quicklaunchicon
 
+;;;; PrefEditors isn't working just right yet, so don't add the link
+;	CreateShellLink(
+;		ExpandConstant('{app}\Common\PrefEditor.lnk'),
+;		'Shortcut to the Preference Editor program',
+;		ExpandConstant('{app}\daborun.exe'),
+;		ExpandConstant('"{app}\ide\PrefEditor.py"'),
+;		ExpandConstant('{app}\ide'),
+;		'',
+;		0,
+;		SW_SHOWNORMAL) ;
+
 [Code]
 procedure LinkDemo();
 begin
@@ -55,6 +66,16 @@ begin
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\demo\SimpleFormWithBizobj.py"'),
 		ExpandConstant('{app}\demo'),
+		'',
+		0,
+		SW_SHOWNORMAL) ;
+
+	CreateShellLink(
+		ExpandConstant('{app}\Common\Dabo Demo.lnk'),
+		'Shortcut to the DaboDemo program',
+		ExpandConstant('{app}\daborun.exe'),
+		ExpandConstant('"{app}\demo\DaboDemo\DaboDemo.py"'),
+		ExpandConstant('{app}\demo\DaboDemo'),
 		'',
 		0,
 		SW_SHOWNORMAL) ;
@@ -80,7 +101,7 @@ begin
 		SW_SHOWNORMAL) ;
 
 	CreateShellLink(
-		ExpandConstant('{app}\Common\SizerTutorial.lnk'),
+		ExpandConstant('{app}\Common\Sizer Tutorial.lnk'),
 		'Shortcut to the sizer tutorial',
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\demo\tutorial\sizerExample.py"'),
@@ -94,7 +115,7 @@ end ;
 procedure LinkIDE();
 begin
 	CreateShellLink(
-		ExpandConstant('{app}\Common\AppWizard.lnk'),
+		ExpandConstant('{app}\Common\App Wizard.lnk'),
 		'Shortcut to the Dabo Application Wizard',
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\ide\wizards\AppWizard\AppWizard.py"'),
@@ -104,7 +125,7 @@ begin
 		SW_SHOWNORMAL) ;
 
 	CreateShellLink(
-		ExpandConstant('{app}\Common\ClassDesigner.lnk'),
+		ExpandConstant('{app}\Common\Class Designer.lnk'),
 		'Shortcut to the Dabo Class Designer',
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\ide\ClassDesigner.py"'),
@@ -114,7 +135,7 @@ begin
 		SW_SHOWNORMAL) ;
 
 	CreateShellLink(
-		ExpandConstant('{app}\Common\ReportDesigner.lnk'),
+		ExpandConstant('{app}\Common\Report Designer.lnk'),
 		'Shortcut to the Dabo Report Designer',
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\ide\ReportDesigner.py"'),
@@ -124,7 +145,7 @@ begin
 		SW_SHOWNORMAL) ;
 
 	CreateShellLink(
-		ExpandConstant('{app}\Common\Editor.lnk'),
+		ExpandConstant('{app}\Common\Text Editor.lnk'),
 		'Shortcut to the Dabo Editor',
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\ide\Editor.py"'),
@@ -134,7 +155,7 @@ begin
 		SW_SHOWNORMAL) ;
 
 	CreateShellLink(
-		ExpandConstant('{app}\Common\ConnectionEditor.lnk'),
+		ExpandConstant('{app}\Common\Connection Editor.lnk'),
 		'Shortcut to the Dabo Connection Editor',
 		ExpandConstant('{app}\daborun.exe'),
 		ExpandConstant('"{app}\ide\CxnEditor.py"'),
@@ -143,14 +164,6 @@ begin
 		0,
 		SW_SHOWNORMAL) ;
 
-	CreateShellLink(
-		ExpandConstant('{app}\Common\FieldSpecEditor.lnk'),
-		'Shortcut to the Dabo FieldSpec Editor',
-		ExpandConstant('{app}\daborun.exe'),
-		ExpandConstant('"{app}\ide\FieldSpecEditor.py"'),
-		ExpandConstant('{app}\ide'),
-		'',
-		0,
-		SW_SHOWNORMAL) ;
-
  end ;
+ 
+

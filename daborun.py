@@ -12,11 +12,17 @@ import xml.dom
 import xml.sax
 import xml.dom.minidom
 
-
+def debugout(*args):
+	# Change this to True to see all the debugging info
+	debug = True
+	if debug:
+		for arg in args:
+			print arg,
+		print
+		
 # Add the current dir and library path
 pth = sys.path
 
-print "OPENING: PATH=", pth
 # For py2exe installations: sys.path will be the path to 'library.zip',
 # which contains all the compiled modules. We need to strip that off
 # to get the base path, from which we can assume that the Dabo files
@@ -27,7 +33,7 @@ for pthItem in pth:
 		dabopth = os.path.join(basepth, "dabo")
 		if not basepth in pth:
 			sys.path.insert(0, basepth)
-			print "INSERTED %s INTO PATH" % basepth
+			debugout( "INSERTED %s INTO PATH" % basepth)
 		break
 
 # Reroute stderr to avoid the popup window:
@@ -36,8 +42,8 @@ sys.stderr = open(os.path.join(basepth, "error.log"), "a")
 currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
-	sys.path.append(currdir)
-	print "APPENDING %s TO PATH" % currdir
+	sys.path.append("\"%s\"" % currdir)
+	debugout("APPENDING %s TO PATH" % currdir)
 	
 def dummyImport():
 	# This proc does nothing except force the inclusion of all the modules
@@ -128,11 +134,11 @@ class DaboRuntimeEngine(object):
 	def __init__(self):
 		try:
 			self.prg = sys.argv[1]
-		except:
+		except IndexError:
 			self.prg = None
 		try:
 			self.module = sys.argv[2]
-		except:
+		except IndexError:
 			self.module = None
 
 		# Inform the framework that we are using the dabo runtime:
@@ -150,18 +156,18 @@ class DaboRuntimeEngine(object):
 				# it to be the first in sys.path. Remove it and insert:
 				try:
 					sys.path.remove(pth)
-					print "INIT: REMOVED %s TO PATH" % pth
+					debugout("INIT: REMOVED %s TO PATH" % pth)
 				except ValueError:
 					pass
 				sys.path.insert(0, pth)
-				print "INIT: INSERTED %s TO PATH" % pth
+				debugout("INIT: INSERTED %s TO PATH" % pth)
 		
 		# Debugging!
-		print "-"*44
-		print "RUN"
-		print "ARGS", sys.argv
-		print "PATH", sys.path
-		print "CURDIR", os.getcwd()
+		debugout("-"*44)
+		debugout("RUN")
+		debugout("ARGS", sys.argv)
+		debugout("PATH", sys.path)
+		debugout("CURDIR", os.getcwd())
 		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
@@ -175,17 +181,26 @@ class DaboRuntimeEngine(object):
 			if isFile:
 				impt = self.prg[:-3]
 				
-			print "self.prg:", self.prg, impt
-			print "self.module:", self.module
+			debugout("self.prg:", self.prg, impt)
+			debugout("self.module:", self.module)
 	
 			if not self.module:
 				if isFile:
-					execfile(self.prg, {"__name__": "__main__"} )
+					pthDir = os.path.split(self.prg)[0]
+					debugout("PTHDIR", pthDir)
+					if pthDir not in sys.path:
+						sys.path.append(pthDir)
+						debugout("BEFORE EXEC ISFILE: APPENDING %s to PATH"% pthDir)
+
+					try:
+						execfile(self.prg, {"__name__": "__main__"} )
+					except StandardError, e:
+						debugout("EXECFILE ERROR", e)
 				else:
 					# File should run directly when imported
 					exec("import " + impt)
 			else:
-				print "EXEC:", impt + "." + self.module + "()"
+				debugout("EXEC:", impt + "." + self.module + "()")
 				exec(impt + "." + self.module + "()")
 		else:
 			app = wx.PySimpleApp()
@@ -199,7 +214,7 @@ class DaboRuntimeEngine(object):
 			app.Destroy()
 			pth = openDlg.GetPath()
 			
-#- 			print "SELECTION", pth
+			debugout("SELECTION", pth)
 			
 			openDlg.Destroy()
 			if res == wx.ID_OK:
@@ -207,10 +222,10 @@ class DaboRuntimeEngine(object):
 					pthDir = os.path.split(pth)[0]
 					if pthDir not in sys.path:
 						sys.path.append(pthDir)
-						print "BEFORE EXEC: APPENDING %s to PATH"% pthDir
+						debugout("BEFORE EXEC: APPENDING %s to PATH"% pthDir)
 						
-				print
-				print "PATH BEFORE EXECUTION", sys.path
+				debugout("")
+				debugout("PATH BEFORE EXECUTION", sys.path)
 
 				execfile(pth, {"__name__": "__main__"} )
 			
