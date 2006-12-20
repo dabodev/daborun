@@ -42,8 +42,8 @@ sys.stderr = open(os.path.join(basepth, "error.log"), "a")
 currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
-	sys.path.append("\"%s\"" % currdir)
-	debugout("APPENDING %s TO PATH" % currdir)
+	sys.path.insert(0, "\"%s\"" % currdir)
+	debugout("INSERTING %s INTO PATH" % currdir)
 	
 def dummyImport():
 	# This proc does nothing except force the inclusion of all the modules
@@ -187,10 +187,12 @@ class DaboRuntimeEngine(object):
 			if not self.module:
 				if isFile:
 					pthDir = os.path.split(self.prg)[0]
+					if not pthDir:
+						pthDir = os.getcwd()
 					debugout("PTHDIR", pthDir)
 					if pthDir not in sys.path:
-						sys.path.append(pthDir)
-						debugout("BEFORE EXEC ISFILE: APPENDING %s to PATH"% pthDir)
+						sys.path.insert(0, pthDir)
+						debugout("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
 
 					try:
 						execfile(self.prg, {"__name__": "__main__"} )
@@ -220,8 +222,11 @@ class DaboRuntimeEngine(object):
 			if res == wx.ID_OK:
 				if pth:
 					pthDir = os.path.split(pth)[0]
+					if not pthDir:
+						pthDir = os.getcwd()
+					debugout("PTHDIR", pthDir)
 					if pthDir not in sys.path:
-						sys.path.append(pthDir)
+						sys.path.insert(0, pthDir)
 						debugout("BEFORE EXEC: APPENDING %s to PATH"% pthDir)
 						
 				debugout("")
