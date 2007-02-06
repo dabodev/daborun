@@ -186,16 +186,17 @@ class DaboRuntimeEngine(object):
 	
 			if not self.module:
 				if isFile:
-					pthDir = os.path.split(self.prg)[0]
+					pthDir, prg = os.path.split(self.prg)
 					if not pthDir:
 						pthDir = os.getcwd()
 					debugout("PTHDIR", pthDir)
 					if pthDir not in sys.path:
 						sys.path.insert(0, pthDir)
 						debugout("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
+					os.chdir(pthDir)
 
 					try:
-						execfile(self.prg, {"__name__": "__main__"} )
+						execfile(prg, {"__name__": "__main__"} )
 					except StandardError, e:
 						debugout("EXECFILE ERROR", e)
 				else:
@@ -221,13 +222,14 @@ class DaboRuntimeEngine(object):
 			openDlg.Destroy()
 			if res == wx.ID_OK:
 				if pth:
-					pthDir = os.path.split(pth)[0]
+					pthDir, prg = os.path.split(self.prg)
 					if not pthDir:
 						pthDir = os.getcwd()
 					debugout("PTHDIR", pthDir)
 					if pthDir not in sys.path:
 						sys.path.insert(0, pthDir)
 						debugout("BEFORE EXEC: APPENDING %s to PATH"% pthDir)
+					os.chdir(pthDir)
 						
 				debugout("")
 				debugout("PATH BEFORE EXECUTION", sys.path)

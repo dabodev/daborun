@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Dabo Runtime Engine
-AppVerName=DaboRun 0.7
+AppVerName=DaboRun 0.7.2
 AppPublisher=Ed Leafe
 AppPublisherURL=http://dabodev.com
 AppSupportURL=http://dabodev.com
@@ -13,8 +13,8 @@ DefaultGroupName=Dabo Runtime Engine
 AllowNoIcons=yes
 Compression=lzma
 SolidCompression=yes
-;OutputBaseFilename=DaboRuntimeSetup
-OutputBaseFilename=DaboRuntimeSetupConsole
+OutputBaseFilename=DaboRuntimeSetup
+;OutputBaseFilename=DaboRuntimeSetupConsole
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}

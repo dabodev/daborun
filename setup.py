@@ -6,12 +6,12 @@ setup(
 	# The first three parameters are not required, if at least a
 	# 'version' is given, then a versioninfo resource is built from
 	# them and added to the executables.
-	version = "0.7",
+	version = "0.7.2",
 	description = "Dabo Runtime Engine",
 	name = "daborun",
 	# targets to build
-	console = ["daborun.py"],
-#	windows = ["daborun.py"],
+#	console = ["daborun.py"],
+	windows = ["daborun.py"],
 	#exclude the actual framework
 	options = { "py2exe": 
 			{"includes" : ["ConfigParser", "threading", "mx.DateTime", "platform", 
