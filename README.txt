@@ -15,6 +15,8 @@ There are two ways: from a DOS command prompt, you can type:
 	
 and the engine will run the specified script. Or, if you don't like the command-line approach, simply double-click either the shortcut installed on your desktop, or the daborun.exe file itself. You will then be presented with a file selection dialog, where you can pick the file you want to run.
 
+If you like using the command prompt, you can add the Dabo Runtime directory to your system's PATH environmental variable. Then you can simply type: "daborun myscript.py" in order to run the 'myscript.py' file.
+
 
 There's a whole bunch of .py files! Which ones should I run?
 ----------------------------------------------------------
@@ -24,30 +26,17 @@ Demo Programs:
 ----------------
 DaboDemo - An example of some of the UI controls and how to work with them. The code for each demo is visible, and you can modify it and run that modified code without harming the original. This is a great way to learn about programming the Dabo UI.
 
-Bubblet - a fun little game where you get to pop lots of bubbles that demonstrates some of the non-database capabilities of Dabo.
-
-Montana - a simple solitaire game that some have found to be very addictive!
-
-SimpleFormWithBizobj - this is the basic application demo. If you have internet connectivity, it will let you query, edit and update a demo database located on the dabodev.com servers. You can create your own apps like this in under a minute using the Dabo AppWizard.
-
-sizerTutorial - a simple demo that helps those who are new to the concept of using sizers to lay out a form figure out how the various settings for a sizer affect the size and position of the objects within the sizer.
-
 
 Development Tools:
 -------------------
 AppWizard - as mentioned above, this is a wizard that guides you through the creation of a complete application that can connect to one of many backend databases. The runtime engine only supports MySQL and Firebird databases currently.
 
-ClassDesigner - this tool allows you to visually lay out your UI classes, and also add code that will fire when the appropriate events occur. You can create classes that can be re-used inside of other classes, and save the whole thing as a runnable application.
+Class Designer - this tool allows you to visually lay out your UI classes, and also add code that will fire when the appropriate events occur. You can create classes that can be re-used inside of other classes, and save the whole thing as a runnable application.
 
-ReportDesigner - Most database applications also need to be able to generate reports on the data, and this tool allows you to visually lay out and control the apppearance of your reports.
+Report Designer - Most database applications also need to be able to generate reports on the data, and this tool allows you to visually lay out and control the apppearance of your reports.
 
-ConnectionEditor - Dabo can store information for connecting to a database in a small XML file. This tool allows you to enter the information, test the connections, and save the info in that XML format.
+Connection Editor - Dabo can store information for connecting to a database in a small XML file. This tool allows you to enter the information, test the connections, and save the info in that XML format.
 
-Editor - A powerful Python text editor written in Dabo. It features code completion, syntax coloring, and lots of other cool stuff.
+Text Editor - A powerful Python text editor written in Dabo. It features code completion, syntax coloring, and lots of other cool stuff.
 
-PrefEditor - a handy tool for viewing, editing and/or deleting any saved preferences on your system. 
-
-
-
-
-
+Preference Editor - a handy tool for viewing, editing and/or deleting any saved preferences on your system. Still a work in progress, so some visual elements may not work consistently.

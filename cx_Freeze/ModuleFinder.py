@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Wrapper for the standard library Python module modulefinder which manages
    a few of the things that the standard module does not manage."""
 

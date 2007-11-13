@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ### dotamatic
 ###
 ### Copyright (C) 2003-2004 Roger Binns <rogerb@rogerbinns.com>

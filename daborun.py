@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 import time
@@ -82,7 +83,7 @@ def dummyImport():
 	
 	import winpdb
 	import MySQLdb
-	import pysqlite2
+	import sqlite3
 	import kinterbasdb
 
 	# For PIL compatibility
@@ -150,6 +151,8 @@ class DaboRuntimeEngine(object):
 			# be searched for, and it will become Application.HomeDirectory.
 			pth = os.path.split(self.prg)[0]
 			if pth:
+				# Make it absolute
+				pth = os.path.abspath(pth)
 				sys._daboRunHomeDir = pth
 
 				# This prg path may have been appended already, but we need
@@ -175,37 +178,7 @@ class DaboRuntimeEngine(object):
 
 
 	def run(self):
-		if self.prg:
-			impt = self.prg
-			isFile = (impt[-3:] == ".py")
-			if isFile:
-				impt = self.prg[:-3]
-				
-			debugout("self.prg:", self.prg, impt)
-			debugout("self.module:", self.module)
-	
-			if not self.module:
-				if isFile:
-					pthDir, prg = os.path.split(self.prg)
-					if not pthDir:
-						pthDir = os.getcwd()
-					debugout("PTHDIR", pthDir)
-					if pthDir not in sys.path:
-						sys.path.insert(0, pthDir)
-						debugout("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
-					os.chdir(pthDir)
-
-					try:
-						execfile(prg, {"__name__": "__main__"} )
-					except StandardError, e:
-						debugout("EXECFILE ERROR", e)
-				else:
-					# File should run directly when imported
-					exec("import " + impt)
-			else:
-				debugout("EXEC:", impt + "." + self.module + "()")
-				exec(impt + "." + self.module + "()")
-		else:
+		if not self.prg:
 			app = wx.PySimpleApp()
 			prmpt = "Please select the Python file to run..."
 			wildcard = "Python Files (*.py)|*.py|" \
@@ -216,25 +189,57 @@ class DaboRuntimeEngine(object):
 			res = openDlg.ShowModal()
 			app.Destroy()
 			pth = openDlg.GetPath()
-			
+
 			debugout("SELECTION", pth)
-			
+			debugout("DLG RESULT", res, res == wx.ID_OK)
+
 			openDlg.Destroy()
 			if res == wx.ID_OK:
-				if pth:
+				self.prg = pth
+
+		if self.prg:
+			impt = self.prg
+			isFile = (impt.endswith(".py"))
+			if isFile:
+				impt = self.prg[:-3]
+			
+			debugout("self.prg:", self.prg, "impt", impt)
+			debugout("self.module:", self.module)
+
+			if os.path.exists("C:\DABO-DEBUG.TXT"):
+				import pdb
+				pdb.set_trace()
+	
+			hasRun = False
+			if self.module:
+				debugout("EXEC:", impt + "." + self.module + "()")
+				try:
+					exec(impt + "." + self.module + "()")
+					hasRun = True
+				except StandardError, e:
+					print "EXEC ERROR:", e
+
+			if not hasRun:
+				if isFile:
 					pthDir, prg = os.path.split(self.prg)
 					if not pthDir:
 						pthDir = os.getcwd()
-					debugout("PTHDIR", pthDir)
+					debugout("PTHDIR", pthDir, "PRG", prg)
 					if pthDir not in sys.path:
 						sys.path.insert(0, pthDir)
-						debugout("BEFORE EXEC: APPENDING %s to PATH"% pthDir)
+						debugout("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
+						debugout("SYSPATH", sys.path)
 					os.chdir(pthDir)
-						
-				debugout("")
-				debugout("PATH BEFORE EXECUTION", sys.path)
 
-				execfile(pth, {"__name__": "__main__"} )
+					try:
+						debugout("ABOUT TO EXECFILE:", prg)
+						debugout("CURDIR:", os.getcwd())
+						execfile(prg, {"__name__": "__main__"} )
+					except StandardError, e:
+						debugout("EXECFILE ERROR", e)
+				else:
+					# File should run directly when imported
+					exec("import " + impt)
 			
 
 if __name__ == "__main__":

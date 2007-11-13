@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 # ConsoleSetLibPath.py
 #   Initialization script for cx_Freeze which manipulates the path so that the
