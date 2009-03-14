@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Dabo Runtime Engine
-AppVerName=DaboRun 0.8.4 - rev 20080610
+AppVerName=DaboRun 0.9.1 - rev 20090126
 AppPublisher=Ed Leafe
 AppPublisherURL=http://dabodev.com
 AppSupportURL=http://dabodev.com
@@ -14,8 +14,8 @@ AllowNoIcons=yes
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
-OutputBaseFilename=DaboRuntimeSetup
-;OutputBaseFilename=DaboRuntimeSetupConsole
+;OutputBaseFilename=DaboRuntimeSetup
+OutputBaseFilename=DaboRuntimeSetupConsole
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
@@ -33,9 +33,9 @@ Name: {app}\ide\*; Type: filesandordirs
 [Files]
 Source: C:\projects\daborun\dist\daborun.exe; DestDir: {app}; Flags: ignoreversion
 Source: C:\projects\daborun\dist\*; Excludes: Output\*, *.iss; DestDir: {app}; Flags: ignoreversion recursesubdirs
-Source: C:\projects\dabo-0.8.4\dabo\dabo\*; DestDir: {app}\dabo; Flags: ignoreversion recursesubdirs
-Source: C:\projects\dabo-0.8.4\dabo\demo\*; DestDir: {app}\demo; Flags: ignoreversion recursesubdirs; AfterInstall: LinkDemo
-Source: C:\projects\dabo-0.8.4\dabo\ide\*; DestDir: {app}\ide; Flags: ignoreversion recursesubdirs; AfterInstall: LinkIDE
+Source: C:\projects\dabo-0.9.1\dabo\*; DestDir: {app}\dabo; Flags: ignoreversion recursesubdirs
+Source: C:\projects\dabo-0.9.1\demo\*; DestDir: {app}\demo; Flags: ignoreversion recursesubdirs; AfterInstall: LinkDemo
+Source: C:\projects\dabo-0.9.1\ide\*; DestDir: {app}\ide; Flags: ignoreversion recursesubdirs; AfterInstall: LinkIDE
 Source: C:\Python25\msvcr71.dll; DestDir: {app}; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: README.txt; DestDir: {app}; Flags: isreadme

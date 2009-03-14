@@ -11,8 +11,8 @@ setup(
 	description = "Dabo Runtime Engine",
 	name = "daborun",
 	# targets to build
-#	console = ["daborun.py"],
-	windows = ["daborun.py"],
+	console = ["daborun.py"],
+#	windows = ["daborun.py"],
 	#exclude the actual framework
 	options = { "py2exe": 
 			{"includes" : ["code", "compiler", "ConfigParser", "copy", "cStringIO", 
