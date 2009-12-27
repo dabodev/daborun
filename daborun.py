@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import traceback
 import os
 import time
 import gettext
@@ -51,9 +52,9 @@ def dummyImport():
 	# included below.
 	import dabo
 	import dabo.biz
-	import dabo.common
 	import dabo.db
 	import dabo.icons
+	import dabo.lib
 	import dabo.ui
 	import dabo.ui.uiwx
 	# import dabo.ui.uitk
@@ -62,6 +63,8 @@ def dummyImport():
 	import wx.build
 	import wx.lib
 	import wx.lib.mixins
+	import wx.lib.platebtn
+	import wx.tools.Editra.src.extern.flatnotebook
 	import wx.py
 	import wx.tools
 	import wx.calendar
@@ -202,8 +205,11 @@ class DaboRuntimeEngine(object):
 			isFile = (impt.endswith(".py"))
 			if isFile:
 				impt = self.prg[:-3]
+			sys._daboRunHomeDir = os.path.dirname(self.prg)
 			
-			debugout("self.prg:", self.prg, "impt", impt)
+			debugout("self.prg:", self.prg)
+			debugout("impt", impt)
+			debugout("homedir", sys._daboRunHomeDir)
 			debugout("self.module:", self.module)
 
 			if os.path.exists("C:\DABO-DEBUG.TXT"):
@@ -230,6 +236,7 @@ class DaboRuntimeEngine(object):
 						debugout("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
 						debugout("SYSPATH", sys.path)
 					os.chdir(pthDir)
+					sys._daboRunHomeDir = pthDir
 
 					try:
 						debugout("ABOUT TO EXECFILE:", prg)
@@ -237,6 +244,14 @@ class DaboRuntimeEngine(object):
 						execfile(prg, {"__name__": "__main__"} )
 					except StandardError, e:
 						debugout("EXECFILE ERROR", e)
+						print "-"*60
+						print "ARGS:", sys.argv
+						print "-"*60
+						traceback.print_exc(file=sys.stdout)
+						print "-"*60
+						traceback.print_tb(sys.last_traceback)
+						print "-"*60
+						
 				else:
 					# File should run directly when imported
 					exec("import " + impt)
