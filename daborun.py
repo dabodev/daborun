@@ -14,7 +14,7 @@ import xml.dom
 import xml.sax
 import xml.dom.minidom
 
-def debugout(*args):
+def debugmsg(*args):
 	# Change this to True to see all the debugging info
 	debug = True
 	if debug:
@@ -24,6 +24,7 @@ def debugout(*args):
 		
 # Add the current dir and library path
 pth = sys.path
+basepth = os.getcwd()
 
 # For py2exe installations: sys.path will be the path to 'library.zip',
 # which contains all the compiled modules. We need to strip that off
@@ -35,7 +36,7 @@ for pthItem in pth:
 		dabopth = os.path.join(basepth, "dabo")
 		if not basepth in pth:
 			sys.path.insert(0, basepth)
-			debugout( "INSERTED %s INTO PATH" % basepth)
+			debugmsg( "INSERTED %s INTO PATH" % basepth)
 		break
 
 # Reroute stderr to avoid the popup window:
@@ -45,7 +46,7 @@ currdir = os.getcwd()
 libdir = os.path.join(currdir, "lib")
 if not currdir in pth:
 	sys.path.insert(0, "\"%s\"" % currdir)
-	debugout("INSERTING %s INTO PATH" % currdir)
+	debugmsg("INSERTING %s INTO PATH" % currdir)
 	
 def dummyImport():
 	# This proc does nothing except force the inclusion of all the modules
@@ -132,6 +133,10 @@ def dummyImport():
 	import XVThumbImagePlugin
 	import XbmImagePlugin
 	import XpmImagePlugin
+	
+	# Logging handlers are ignored without this.
+	import logging
+	import logging.handlers
 
 
 class DaboRuntimeEngine(object):
@@ -162,22 +167,21 @@ class DaboRuntimeEngine(object):
 				# it to be the first in sys.path. Remove it and insert:
 				try:
 					sys.path.remove(pth)
-					debugout("INIT: REMOVED %s TO PATH" % pth)
+					debugmsg("INIT: REMOVED %s TO PATH" % pth)
 				except ValueError:
 					pass
 				sys.path.insert(0, pth)
-				debugout("INIT: INSERTED %s TO PATH" % pth)
+				debugmsg("INIT: INSERTED %s TO PATH" % pth)
 		
 		# Debugging!
-		debugout("-"*44)
-		debugout("RUN")
-		debugout("ARGS", sys.argv)
-		debugout("PATH", sys.path)
-		debugout("CURDIR", os.getcwd())
+		debugmsg("-"*44)
+		debugmsg("RUN")
+		debugmsg("ARGS", sys.argv)
+		debugmsg("PATH", sys.path)
+		debugmsg("CURDIR", os.getcwd())
 		
 		# Update the argv list to eliminate this program
 		sys.argv = sys.argv[1:]
-
 
 
 	def run(self):
@@ -193,8 +197,8 @@ class DaboRuntimeEngine(object):
 			app.Destroy()
 			pth = openDlg.GetPath()
 
-			debugout("SELECTION", pth)
-			debugout("DLG RESULT", res, res == wx.ID_OK)
+			debugmsg("SELECTION", pth)
+			debugmsg("DLG RESULT", res, res == wx.ID_OK)
 
 			openDlg.Destroy()
 			if res == wx.ID_OK:
@@ -207,10 +211,10 @@ class DaboRuntimeEngine(object):
 				impt = self.prg[:-3]
 			sys._daboRunHomeDir = os.path.dirname(self.prg)
 			
-			debugout("self.prg:", self.prg)
-			debugout("impt", impt)
-			debugout("homedir", sys._daboRunHomeDir)
-			debugout("self.module:", self.module)
+			debugmsg("self.prg:", self.prg)
+			debugmsg("impt", impt)
+			debugmsg("homedir", sys._daboRunHomeDir)
+			debugmsg("self.module:", self.module)
 
 			if os.path.exists("C:\DABO-DEBUG.TXT"):
 				import pdb
@@ -218,7 +222,7 @@ class DaboRuntimeEngine(object):
 	
 			hasRun = False
 			if self.module:
-				debugout("EXEC:", impt + "." + self.module + "()")
+				debugmsg("EXEC:", impt + "." + self.module + "()")
 				try:
 					exec(impt + "." + self.module + "()")
 					hasRun = True
@@ -230,28 +234,25 @@ class DaboRuntimeEngine(object):
 					pthDir, prg = os.path.split(self.prg)
 					if not pthDir:
 						pthDir = os.getcwd()
-					debugout("PTHDIR", pthDir, "PRG", prg)
+					pthDir = os.path.abspath(pthDir)
+					debugmsg("PTHDIR", pthDir, "PRG", prg)
 					if pthDir not in sys.path:
 						sys.path.insert(0, pthDir)
-						debugout("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
-						debugout("SYSPATH", sys.path)
+						debugmsg("BEFORE EXEC ISFILE: INSERTING %s INTO PATH"% pthDir)
+						debugmsg("SYSPATH", sys.path)
 					os.chdir(pthDir)
 					sys._daboRunHomeDir = pthDir
-
 					try:
-						debugout("ABOUT TO EXECFILE:", prg)
-						debugout("CURDIR:", os.getcwd())
+						debugmsg("ABOUT TO EXECFILE:", prg)
+						debugmsg("CURDIR:", os.getcwd())
 						execfile(prg, {"__name__": "__main__"} )
 					except StandardError, e:
-						debugout("EXECFILE ERROR", e)
+						debugmsg("EXECFILE ERROR", e)
 						print "-"*60
 						print "ARGS:", sys.argv
 						print "-"*60
 						traceback.print_exc(file=sys.stdout)
 						print "-"*60
-						traceback.print_tb(sys.last_traceback)
-						print "-"*60
-						
 				else:
 					# File should run directly when imported
 					exec("import " + impt)
